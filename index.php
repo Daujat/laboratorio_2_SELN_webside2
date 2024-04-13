@@ -36,24 +36,25 @@
     <div class="container">
       <div class="card">
         <div class="card-body">
+          <!-- Formulario para registrar nuevas personas -->
           <form autocomplete="off" action="index-post.php" method="post">
             <div class="row">
               <div class="col-sm-4 col-4">
                 <div class="form-group">
                   <label>Nro Documento</label>
-                  <input type="tex" name="doc" maxlength="8" class="form-control">
+                  <input type="text" name="doc" maxlength="8" class="form-control">
                 </div>
               </div>
               <div class="col-sm-4 col-4">
                 <div class="form-group">
                   <label>Nombre</label>
-                  <input type="tex" name="nom" class="form-control">
+                  <input type="text" name="nom" class="form-control">
                 </div>
               </div>
               <div class="col-sm-4 col-4">
                 <div class="form-group">
                   <label>Apellidos</label>
-                  <input type="tex" name="ape" class="form-control">
+                  <input type="text" name="ape" class="form-control">
                 </div>
               </div>
             </div>
@@ -61,13 +62,13 @@
               <div class="col-sm-4 col-4">
                 <div class="form-group">
                   <label>Direccion</label>
-                  <input type="tex" name="dir" class="form-control">
+                  <input type="text" name="dir" class="form-control">
                 </div>
               </div>
               <div class="col-sm-4 col-4">
                 <div class="form-group">
                   <label>Celular</label>
-                  <input type="tex" name="cel" class="form-control">
+                  <input type="text" name="cel" class="form-control">
                 </div>
               </div>
             </div>
@@ -76,23 +77,74 @@
         </div>
       </div>
 
-      <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-          <div class="col-12 col-md">
-            <img class="mb-2" src="https://www.svgrepo.com/show/508391/uncle.svg" alt="" width="24" height="24">
-            <small class="d-block mb-3 text-muted">&copy; 2023-1</small>
+      <!-- Tabla para mostrar los datos de las personas -->
+      <div class="card mt-5">
+        <div class="card-body">
+          <h2 class="card-title">Lista de Personas</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Nro Documento</th>
+                  <th>Nombre</th>
+                  <th>Apellidos</th>
+                  <th>Dirección</th>
+                  <th>Celular</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                // Incluir el archivo de conexión
+                include("conexion.php");
+
+                // Establecer la conexión
+                $con = conexion();
+
+                // Consulta SQL para seleccionar todas las filas de la tabla "persona"
+                $sql = "SELECT * FROM persona";
+
+                // Ejecutar la consulta
+                $resultado = pg_query($con, $sql);
+
+                // Comprobar si la consulta se realizó con éxito
+                if ($resultado) {
+                  // Recorrer los resultados y mostrar cada fila en la tabla
+                  while ($fila = pg_fetch_assoc($resultado)) {
+                    echo "<tr>";
+                    echo "<td>" . $fila['documento'] . "</td>";
+                    echo "<td>" . $fila['nombre'] . "</td>";
+                    echo "<td>" . $fila['apellido'] . "</td>";
+                    echo "<td>" . $fila['direccion'] . "</td>";
+                    echo "<td>" . $fila['celular'] . "</td>";
+                    echo "</tr>";
+                  }
+                } else {
+                  // Mostrar un mensaje de error si la consulta falla
+                  echo "<tr><td colspan='5'>Error al ejecutar la consulta SQL: " . pg_last_error($con) . "</td></tr>";
+                }
+
+                // Cerrar la conexión
+                pg_close($con);
+                ?>
+              </tbody>
+            </table>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+      <div class="row">
+        <div class="col-12 col-md">
+          <img class="mb-2" src="https://www.svgrepo.com/show/508391/uncle.svg" alt="" width="24" height="24">
+          <small class="d-block mb-3 text-muted">&copy; 2023-1</small>
+        </div>
+      </div>
+    </footer>
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
-  </body>
-</html>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs
